@@ -1,18 +1,27 @@
 describe('Orange HRM Testes', () => {
+
+  const selectorList = {
+    usernameField: "[name='username']",
+    passwordField: "[name='password']",
+    loginButton: "[type='submit']",
+    sectionTitleTopBar: ".oxd-topbar-header-breadcrumb-module",
+    wrongCredentialAlert: "[role='alert']"
+  }
+
   it('Successful login', () => {
     cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
-    cy.get("[name='username']").type("Admin")
-    cy.get(':nth-child(3) > .oxd-input-group > :nth-child(2) > .oxd-input').type("admin123")
-    cy.get('.oxd-button').click()
+    cy.get(selectorList.usernameField).type("Admin")
+    cy.get(selectorList.passwordField).type("admin123")
+    cy.get(selectorList.loginButton).click()
     cy.location('pathname').should('equal', '/web/index.php/dashboard/index')
-    cy.get('.oxd-topbar-header-breadcrumb > .oxd-text').contains('Dashboard')
+    cy.get(selectorList.sectionTitleTopBar).contains('Dashboard')
   })
 
   it('Unsuccessful login', () => {
     cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
-    cy.get(':nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-input').type("teste")
-    cy.get(':nth-child(3) > .oxd-input-group > :nth-child(2) > .oxd-input').type("teste123")
-    cy.get('.oxd-button').click()
-    cy.get('.oxd-alert-content > .oxd-text').contains('Invalid credentials')
+    cy.get(selectorList.usernameField).type("teste")
+    cy.get(selectorList.passwordField).type("teste123")
+    cy.get(selectorList.loginButton).click()
+    cy.get(selectorList.wrongCredentialAlert).contains('Invalid credentials')
   })
 })
